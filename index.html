@@ -7,7 +7,7 @@
 <meta name="keywords" content="OCP Java SE 21, 1Z0-830, Java 21 certification, Oracle Certified Professional Java, Java practice questions, Java mock exam, OCP Java 21 study guide, Java OOP quiz, method overloading, varargs, initialization order, nested classes, garbage collection">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#13243a">
-<link rel="canonical" href="https://kaikimax.github.io/heap-quest/">
+<link rel="canonical" href="https://YOUR-USERNAME.github.io/heap-quest/">
 
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -18,22 +18,22 @@
 <meta property="og:site_name" content="Heap Quest">
 <meta property="og:title" content="Heap Quest: OCP Java SE 21 (1Z0-830) Practice Game">
 <meta property="og:description" content="Free OCP Java SE 21 (1Z0-830) practice game. Learn the object life-cycle, access modifiers, overloading, varargs, initialization order and nested classes, then take a timed mock exam with multi-select questions.">
-<meta property="og:url" content="https://kaikimax.github.io/heap-quest/">
-<meta property="og:image" content="https://kaikimax.github.io/heap-quest/og-image.png">
+<meta property="og:url" content="https://YOUR-USERNAME.github.io/heap-quest/">
+<meta property="og:image" content="https://YOUR-USERNAME.github.io/heap-quest/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Heap Quest: OCP Java SE 21 (1Z0-830) practice game">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Heap Quest: OCP Java SE 21 (1Z0-830) Practice Game">
 <meta name="twitter:description" content="Free OCP Java SE 21 (1Z0-830) practice game. Learn the object life-cycle, access modifiers, overloading, varargs, initialization order and nested classes, then take a timed mock exam with multi-select questions.">
-<meta name="twitter:image" content="https://kaikimax.github.io/heap-quest/og-image.png">
+<meta name="twitter:image" content="https://YOUR-USERNAME.github.io/heap-quest/og-image.png">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Heap Quest",
-  "url": "https://kaikimax.github.io/heap-quest/",
+  "url": "https://YOUR-USERNAME.github.io/heap-quest/",
   "description": "Free OCP Java SE 21 (1Z0-830) practice game. Learn the object life-cycle, access modifiers, overloading, varargs, initialization order and nested classes, then take a timed mock exam with multi-select questions.",
   "applicationCategory": "EducationalApplication",
   "operatingSystem": "Any",
@@ -43,7 +43,7 @@
   "educationalUse": "Exam preparation",
   "teaches": ["Java object life-cycle and garbage collection", "Packages and imports", "Access modifiers", "Static and instance members", "Method overloading and varargs", "Constructors and initialization order", "Nested, inner, local and anonymous classes"],
   "about": { "@type": "Thing", "name": "Oracle Certified Professional: Java SE 21 Developer (1Z0-830)" },
-  "image": "https://kaikimax.github.io/heap-quest/og-image.png"
+  "image": "https://YOUR-USERNAME.github.io/heap-quest/og-image.png"
 }
 </script>
 <title>Heap Quest | OCP Java SE 21 (1Z0-830) Practice Questions &amp; Mock Exam Game</title>
@@ -179,8 +179,9 @@ pre.code .k{color:var(--kw)} pre.code .s{color:var(--str)} pre.code .c{color:var
 .choose{display:inline-block;font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;background:var(--ink);color:var(--paper);padding:2px 8px;border-radius:3px;margin-bottom:10px}
 .timer{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.95rem;border:1.5px solid var(--line);border-radius:5px;padding:3px 10px}
 .timer.low{color:var(--bad);border-color:var(--bad)}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:6px;font-family:var(--f-display);font-weight:600;opacity:0;transition:opacity .25s;pointer-events:none;z-index:5}
-.toast.on{opacity:1}
+.toast{position:absolute;left:50%;top:0;width:max-content;max-width:calc(100vw - 32px);transform:translate(-50%,8px);background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:8px;border:2px solid var(--accent);box-shadow:0 10px 30px rgba(0,0,0,.28);font-family:var(--f-display);font-weight:600;font-size:1.05rem;text-align:center;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:50}
+.toast small{display:block;font-family:var(--f-mono);font-size:.68rem;font-weight:400;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:2px}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 @keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.01)}100%{transform:scale(1)}}
 .pop{animation:pop .25s ease-out}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
@@ -656,6 +657,245 @@ new Outer().new Inner().show(3);`,opts:["6","9","3","Doesn't compile"],a:0,why:"
 ]};
 LEVELS.forEach(L=>L.qs.push(...EXTRA[L.id]));
 
+/* ---------- Bigger zone pools: each run draws ZONE_N at random ---------- */
+const ZONE_N=7;
+const POOL={
+life:[
+{type:"order",q:"Tap what happens, in order, when <code>Book b = new Book(\"x\");</code> runs.",items:["Memory for a Book is allocated on the heap","Its fields get default values","The constructor runs","The reference is stored in b"],why:"new allocates and zeroes the object, the constructor initializes it, and only then is the finished reference assigned."},
+{type:"mcq",q:"How many Book objects are eligible for GC after the loop?",code:`Book b = null;
+for (int i = 0; i < 3; i++) {
+    b = new Book();
+}`,opts:["2","3","1","0"],a:0,why:"Three Books are created. Each pass orphans the previous one, and b still holds the last."},
+{type:"mcq",q:"Once <code>read()</code> has returned, is its Book eligible for GC?",code:`void read() {
+    Book b = new Book();
+    b.open();
+}`,opts:["Yes, nothing refers to it anymore","No, it lives until the program ends","Only if b was set to null","Only after System.gc()"],a:0,why:"The local variable disappears when the method returns, taking the only reference with it."},
+{type:"mcq",q:"After the last line, is the Book eligible for GC?",code:`static Book make() { return new Book(); }
+// main:
+Book kept = make();`,opts:["No, kept refers to it","Yes, make() has returned","Yes, it was created in another method","It depends on the JVM"],a:0,why:"Where an object was created doesn't matter. It's reachable through <code>kept</code>."},
+{type:"mcq",q:"How many <b>Book</b> objects are eligible after the last line?",code:`List<Book> list = new ArrayList<>();
+list.add(new Book());
+Book other = new Book();
+list = null;`,opts:["1","2","0","3"],a:0,why:"The Book inside the list became unreachable with the list. <code>other</code> still holds the second one."},
+{type:"multi",pick:2,q:"Which TWO actions can make an object eligible for GC?",opts:["Setting its only reference to null","Pointing its only reference at a different object","Calling System.gc()","Storing it in a static field","Calling its toString()"],a:[0,1],why:"Eligibility is about losing every path to the object. System.gc() only requests a collection, and a static field keeps the object alive."},
+{type:"mcq",q:"Is the Config object eligible for GC after <code>setup()</code> returns?",code:`class App {
+    static Config current;
+    static void setup() {
+        Config c = new Config();
+        current = c;
+    }
+}`,opts:["No, the static field still refers to it","Yes, c went out of scope","Yes, static fields don't count","Only after main ends"],a:0,why:"Static fields are GC roots. The object stays reachable until <code>current</code> changes."},
+{type:"mcq",q:"Which statement about garbage collection is true?",opts:["You can't control exactly when an object is collected","Calling finalize() frees an object","Objects are collected in the order they were created","An object is collected as soon as it becomes eligible"],a:0,why:"The JVM decides when to collect, and finalize() is deprecated anyway."}
+],
+pkg:[
+{type:"mcq",q:"You need <code>java.util.Date</code> and <code>java.sql.Date</code> in one class. Which works?",opts:["Import one and use the other's fully qualified name","Import both with single-type imports","Import both packages with wildcards and use Date","Use import alias syntax: import java.sql.Date as SqlDate"],a:0,why:"Java has no import aliases. Two single-type imports clash, and two wildcards make Date ambiguous."},
+{type:"mcq",q:"Cart and Item are both in package <code>shop</code>. Cart has no imports. Does this compile?",code:`package shop;
+public class Cart {
+    Item first;
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"Classes in the same package are visible without an import."},
+{type:"mcq",q:"Does this compile?",code:`import java.lang.*;
+import java.lang.String;
+
+public class Hello {
+    String msg = "hi";
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"Redundant imports are allowed. java.lang is already imported automatically."},
+{type:"mcq",q:"Which comment can the javadoc tool turn into HTML documentation?",opts:["/** Returns the total. */","/* Returns the total. */","// Returns the total.","<!-- Returns the total. -->"],a:0,why:"Javadoc comments start with /**. The last one isn't Java at all."},
+{type:"multi",pick:2,q:"Which TWO are Java keywords?",opts:["static","new","String","main","length"],a:[0,1],why:"String is a class, main is an ordinary method name, and length is a field of arrays."},
+{type:"mcq",q:"Which package declaration does NOT compile?",opts:["package com.int.tools;","package com.Shop;","package app_2.core;","package $money;"],a:0,why:"int is a keyword and can't be part of a package name. Uppercase letters are a convention issue, not a compile error."},
+{type:"mcq",q:"Does this compile with no import statements?",code:`public class Names {
+    java.util.List<String> all = new java.util.ArrayList<>();
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"Fully qualified names always work without an import."},
+{type:"order",q:"Tap the parts of a source file in the order they must appear.",items:["package statement","import statements","class declaration"],why:"Package first, then imports, then types. Only comments can come before the package statement."}
+],
+access:[
+{type:"mcq",q:"Does this compile?",code:`public class Account {
+    private int pin;
+    boolean samePin(Account other) {
+        return pin == other.pin;
+    }
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"private means private to the class, not to the object. Code in Account can read the private fields of any Account."},
+{type:"mcq",q:"Does Shop compile?",code:`package a;
+class Helper { }
+
+package b;
+import a.Helper;
+public class Shop { }`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"Helper is package-private, so code in package b can't even import it."},
+{type:"mcq",q:"Widget is public, but its only constructor has no access modifier. From another package, what happens?",code:`package ui;
+public class Widget {
+    Widget() { }
+}
+
+package app;
+Widget w = new ui.Widget();`,opts:["Doesn't compile: the constructor isn't visible","Compiles","Compiles but throws at runtime","Compiles with a warning"],a:0,why:"A public class doesn't make its members public. The package-private constructor can't be called from package app."},
+{type:"mcq",q:"Shelf and Clerk are in the same package. Clerk doesn't extend Shelf. Does Clerk compile?",code:`public class Shelf {
+    protected int stock = 4;
+}
+public class Clerk {
+    int count(Shelf s) { return s.stock; }
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"protected includes package-private access, so any class in the same package can use it."},
+{type:"multi",pick:3,q:"Which THREE modifiers can NOT be used on a top-level class?",opts:["private","protected","static","final","abstract","public"],a:[0,1,2],why:"Those three only apply to members, including nested classes."},
+{type:"mcq",q:"Does Child compile?",code:`class Parent {
+    private void secret() { }
+}
+class Child extends Parent {
+    void reveal() { super.secret(); }
+}`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"Private members aren't inherited, and super doesn't bypass access rules."},
+{type:"mcq",q:"Which is the most restrictive modifier that still lets subclasses in other packages use a method?",opts:["protected","public","package-private","private"],a:0,why:"protected adds subclass access to package access. public would also work, but it's less restrictive."},
+{type:"mcq",q:"Does Shapes.java compile?",code:`// Shapes.java
+public class Shapes { }
+public class Circle { }`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"A file can have only one public top-level type, and its name must match the file."}
+],
+members:[
+{type:"mcq",q:"Does the last line compile?",code:`public class Bank {
+    void audit() { }
+}
+// in another class:
+Bank.audit();`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"audit() is an instance method. Calling it needs an object: <code>new Bank().audit()</code>."},
+{type:"mcq",q:"What prints?",code:`class Price {
+    double amount;
+    char code;
+}
+Price p = new Price();
+System.out.println(p.amount);`,opts:["0.0","0","null","Doesn't compile"],a:0,why:"double fields default to 0.0."},
+{type:"mcq",q:"What prints?",code:`String[] names = new String[2];
+System.out.println(names[0]);`,opts:["null","Doesn't compile: names[0] is never assigned","An empty line","Throws NullPointerException"],a:0,why:"Array elements always get default values, even when the array is a local variable."},
+{type:"mcq",q:"Does this compile?",code:`public class Badge {
+    final String id;
+}`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"A final field must be assigned. With no initializer, no initializer block and no constructor, it never is."},
+{type:"mcq",q:"Does this compile?",code:`public class Clock {
+    int hour;
+    static void reset() {
+        this.hour = 0;
+    }
+}`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"There's no <code>this</code> in a static method."},
+{type:"multi",pick:2,q:"Which TWO statements about static fields are true?",opts:["There's one copy shared by every instance","They can be used without creating an object","Each object gets its own copy","Static methods can use them through this","They're reset each time an object is created"],a:[0,1],why:"Static fields belong to the class, not to any object."},
+{type:"mcq",q:"What happens?",code:`final int[] scores = {1, 2};
+scores[0] = 5;
+System.out.println(scores[0]);`,opts:["Prints 5","Doesn't compile: scores is final","Prints 1","Throws an exception"],a:0,why:"final freezes the reference, not the array's contents."}
+],
+methods:[
+{type:"mcq",q:"Does this compile?",code:`int sign(int n) {
+    if (n > 0) return 1;
+    else if (n < 0) return -1;
+}`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"When n is 0, no return statement runs. Every path of a non-void method must return a value."},
+{type:"mcq",q:"Which method compiles?",opts:["void stop() { return; }","void stop() { return 0; }","int stop() { return; }","int stop() { }"],a:0,why:"A void method may use a bare return. A non-void method must return a value."},
+{type:"mcq",q:"Does this compile?",code:`int total() {
+    return 10;
+    System.out.println("done");
+}`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"The println can never run. Unreachable statements are compile errors."},
+{type:"mcq",q:"The only method is <code>void take(int x)</code>. Does <code>take(5L);</code> compile?",opts:["Doesn't compile: long can't narrow to int","Compiles, x is 5","Compiles with a warning","Throws an exception at runtime"],a:0,why:"Java widens arguments automatically, but it never narrows them."},
+{type:"mcq",q:"Does this compile?",code:`void addTag(final List<String> tags) {
+    tags.add("new");
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"final stops you reassigning the parameter. Calling methods on the object is fine."},
+{type:"mcq",q:"What prints?",code:`static void inc(Integer i) {
+    i++;
+}
+// main:
+Integer n = 5;
+inc(n);
+System.out.println(n);`,opts:["5","6","Doesn't compile","null"],a:0,why:"Integer is immutable. i++ creates a new Integer and points the local parameter at it."},
+{type:"multi",pick:2,q:"Which TWO method declarations compile?",opts:["public static final void go() { }","void go() throws Exception { }","void public go() { }","static int go() { }","go() { }"],a:[0,1],why:"Modifiers come before the return type, a non-void method needs a return, and every method needs a return type."},
+{type:"mcq",q:"Which method compiles?",opts:["long size() { return 5; }","int size() { return 5L; }","int size() { return 5.0; }","byte size() { return 300; }"],a:0,why:"The returned value is converted like an assignment: widening is fine, narrowing isn't, and 300 doesn't fit in a byte."}
+],
+overload:[
+{type:"mcq",q:"What prints?",code:`static void m(int x)       { System.out.print("int"); }
+static void m(Character c) { System.out.print("Character"); }
+
+m('a');`,opts:["int","Character","Doesn't compile: ambiguous","char"],a:0,why:"Widening char to int is tried before boxing char to Character."},
+{type:"mcq",q:"What prints?",code:`static void m(Object o)      { System.out.print("O"); }
+static void m(Integer... n)  { System.out.print("V"); }
+
+m(5);`,opts:["O","V","Doesn't compile: ambiguous","Throws an exception"],a:0,why:"The boxing phase allows int → Integer → Object, so m(Object) is found before varargs is tried."},
+{type:"mcq",q:"What prints?",code:`static void m(long x)  { System.out.print("L"); }
+static void m(int... x) { System.out.print("V"); }
+
+m(5);
+m();`,opts:["LV","VV","LL","Doesn't compile"],a:0,why:"m(5) widens to long. m() only fits the varargs version."},
+{type:"multi",pick:3,q:"Given <code>static void f(int... x)</code>, which THREE calls compile?",opts:["f()","f(1, 2, 3)","f(new int[]{4})","f(1L)","f(1, \"2\")"],a:[0,1,2],why:"Varargs takes zero or more ints, or an int array. A long can't narrow to int, and a String isn't an int."},
+{type:"mcq",q:"What prints?",code:`static void m(short s) { System.out.print("short"); }
+static void m(int i)   { System.out.print("int"); }
+
+byte b = 1;
+m(b);`,opts:["short","int","Doesn't compile: ambiguous","byte"],a:0,why:"Both need widening, and short is more specific than int."},
+{type:"mcq",q:"A class's only main method is <code>public static void main(int[] args)</code>. What happens when you run it with standard Java 21?",opts:["It compiles, but launching fails because there's no valid main","It doesn't compile","It runs and args is empty","It runs and args is null"],a:0,why:"Any method can be named main. The launcher only accepts a String array parameter."},
+{type:"mcq",q:"What prints?",code:`static void m(double d)  { System.out.print("double"); }
+static void m(Integer i) { System.out.print("Integer"); }
+
+m(5);`,opts:["double","Integer","Doesn't compile: ambiguous","int"],a:0,why:"Widening int to double comes before boxing."}
+],
+init:[
+{type:"mcq",q:"What prints?",code:`class A {
+    A() { this(5); System.out.print("A"); }
+    A(int x) { System.out.print("B"); }
+}
+new A();`,opts:["BA","AB","A","B"],a:0,why:"this(5) runs the other constructor first, then the rest of A()."},
+{type:"mcq",q:"What prints?",code:`class Lazy {
+    static { System.out.print("L"); }
+    static void hi() { System.out.print("H"); }
+}
+// main, in another class:
+System.out.print("M");
+Lazy.hi();`,opts:["MLH","LMH","MHL","LHM"],a:0,why:"A class is initialized the first time it's used, which here is the call to hi()."},
+{type:"mcq",q:"What prints?",code:`class Order {
+    Order() { System.out.print("C"); }
+    { System.out.print("I"); }
+}
+new Order();`,opts:["IC","CI","C","Doesn't compile"],a:0,why:"Instance initializers run before the constructor body, wherever they appear in the source."},
+{type:"mcq",q:"Does Child compile?",code:`class Parent {
+    Parent(int x) { }
+}
+class Child extends Parent {
+    Child() { }
+}`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"Child() gets an implicit super(), but Parent has no no-arg constructor."},
+{type:"mcq",q:"What prints?",code:`class Grid {
+    int a = 2;
+    int b = a * 3;
+}
+System.out.println(new Grid().b);`,opts:["6","0","2","Doesn't compile"],a:0,why:"Field initializers run top to bottom, so a is already 2 when b is computed."},
+{type:"multi",pick:2,q:"Which TWO statements about static initializers are true?",opts:["They run once per class","A class can have several, and they run in source order","They can use this","They run every time an object is created","They can take parameters"],a:[0,1],why:"Static initializers run once during class initialization, with no object and no parameters."},
+{type:"mcq",q:"<code>public class Ok { }</code> declares no constructor. What does the compiler add?",opts:["public Ok() { super(); }","Ok() { }","private Ok() { }","Nothing"],a:0,why:"The default constructor gets the class's access level and calls super()."},
+{type:"mcq",q:"Does this compile?",code:`class Loop {
+    Loop() { this(1); }
+    Loop(int x) { this(); }
+}`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"The compiler rejects constructors that call each other in a cycle."}
+],
+nested:[
+{type:"mcq",q:"What prints?",code:`class Outer {
+    int clicks;
+    void wire() {
+        Runnable r = new Runnable() {
+            public void run() { clicks++; }
+        };
+        r.run();
+        r.run();
+        System.out.println(clicks);
+    }
+}
+new Outer().wire();`,opts:["2","0","Doesn't compile: clicks isn't effectively final","1"],a:0,why:"The effectively final rule covers local variables. Fields of the enclosing object can be changed."},
+{type:"mcq",q:"Which statement about static nested classes is true?",opts:["They can have instance fields and their own constructors","They can't be instantiated","They can only contain static members","They need an outer instance to be created"],a:0,why:"A static nested class is a full class. Only its link to the outer class is static."},
+{type:"mcq",q:"Does this compile?",code:`class Outer {
+    private String hidden() { return "x"; }
+    class Inner {
+        String peek() { return hidden(); }
+    }
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"Inner classes can use every member of the outer class, private ones included."},
+{type:"mcq",q:"Does this compile?",code:`class Shop {
+    String name = "Corner";
+    void open() {
+        class Sign {
+            String text() { return name; }
+        }
+        System.out.println(new Sign().text());
+    }
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"A local class in an instance method can use the enclosing object's fields."},
+{type:"multi",pick:2,q:"Which TWO can an anonymous class do?",opts:["Override methods of its parent type","Declare its own fields","Declare a constructor","Extend a class and implement an interface","Be declared static"],a:[0,1],why:"It can have fields, methods and initializer blocks, but no name, no constructor and only one supertype."},
+{type:"mcq",q:"Pt doesn't override toString(). What does <code>System.out.println(new Pt());</code> print?",opts:["Pt@ followed by the hash code in hexadecimal","The object's memory address","Pt with its field values","An empty line"],a:0,why:"Object.toString() returns the class name, an @, and the hash code in hex. It's not a memory address."},
+{type:"mcq",q:"Does this compile?",code:`void build() {
+    private class Helper { }
+}`,opts:["Compiles","Doesn't compile"],a:1,fixed:true,why:"Local classes can't have access modifiers."}
+]};
+LEVELS.forEach(L=>L.qs.push(...POOL[L.id]));
+
 /* ---------- HARD MODE: extra exam pool ---------- */
 EXAM.push(
 {lv:"members",type:"multi",pick:2,q:"Which TWO statements are true?",code:`package app;
@@ -800,7 +1040,26 @@ function hl(code){
   return out+esc(code.slice(last));
 }
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove("on"),1600);}
+/* Toasts float next to where the player last clicked or tabbed, so they're always in view,
+   even when the page is embedded in a frame that grows to fit its content. */
+let lastY=null;
+document.addEventListener("pointerdown",e=>{lastY=e.pageY;},true);
+document.addEventListener("focusin",e=>{const r=e.target.getBoundingClientRect();lastY=r.top+window.scrollY;},true);
+function toast(t,label){
+  const el=$("#toast");
+  el.innerHTML=(label?`<small>${label}</small>`:"")+esc(t);
+  clearTimeout(el._t);
+  requestAnimationFrame(()=>{
+    const h=el.offsetHeight,docH=document.documentElement.scrollHeight;
+    const viewTop=window.scrollY,viewBot=viewTop+window.innerHeight;
+    let y=(lastY!=null?lastY:viewTop+window.innerHeight/3)-h-24;
+    y=Math.min(Math.max(y,viewTop+12),viewBot-h-12);   // keep it inside the visible area
+    y=Math.max(12,Math.min(y,docH-h-12));               // and inside the page
+    el.style.top=y+"px";
+    el.classList.add("on");
+  });
+  el._t=setTimeout(()=>el.classList.remove("on"),label?2600:1800);
+}
 function rank(){let r=RANKS[0],next=null;for(let i=0;i<RANKS.length;i++){if(S.xp>=RANKS[i][0]){r=RANKS[i];next=RANKS[i+1]||null;}}return{r,next};}
 function hud(){
   const {r,next}=rank();
@@ -808,7 +1067,7 @@ function hud(){
   $("#xpfill").style.width=next?Math.min(100,(S.xp-r[0])/(next[0]-r[0])*100)+"%":"100%";
   $("#cleared").textContent=Object.keys(S.stars).length+"/8";
 }
-function addXP(n){const before=rank().r[1];S.xp+=n;save();const after=rank().r[1];if(after!==before)toast("Rank up: "+after);}
+function addXP(n){const before=rank().r[1];S.xp+=n;save();const after=rank().r[1];if(after!==before)toast(after,"Rank up");}
 function unlocked(i){return S.unlockAll||i===0||S.stars[LEVELS[i-1].id]!=null;}
 
 /* ---------- MAP ---------- */
@@ -822,7 +1081,7 @@ function map(){
   }).join("");
   const allDone=Object.keys(S.stars).length===8;
   const best=S.best!=null?`Best score: ${S.best}/20`:"Not attempted";
-  app.innerHTML=`<p class="intro">Eight zones of the heap, one per part of Chapter 1. Each zone opens with a short briefing, then challenges. You have 3 hearts per zone. Run out and you hit a StackOverflowError and replay it. Clear all eight to face the final exam.</p>
+  app.innerHTML=`<p class="intro">Eight zones of the heap, one per part of Chapter 1. Each zone opens with a short briefing, then 7 challenges drawn at random from that zone's question bank. You have 3 hearts per zone. Run out and you hit a StackOverflowError and replay it. Clear all eight to face the final exam.</p>
   <div class="heap-label">Heap map</div>
   <div class="zones">${zones}
    <button class="zone exam" id="examBtn" ${allDone||S.unlockAll?"":"disabled"}>
@@ -844,21 +1103,21 @@ function briefing(i){
    <div class="topbar"><button class="back" id="bk">← Map</button><span class="eyebrow">Zone ${i+1} · ${L.addr} · Briefing</span></div>
    <h2>${L.name}</h2>${L.lesson}
    <div class="traps"><h3>Exam traps</h3><ul>${L.traps.map(t=>`<li>${t}</li>`).join("")}</ul></div>
-   <div class="actions"><button class="primary" id="go">Start ${L.qs.length} challenges</button></div></div>`;
+   <div class="actions"><button class="primary" id="go">Start ${Math.min(ZONE_N,L.qs.length)} challenges</button><span style="color:var(--muted);font-size:.85rem">Drawn at random from ${L.qs.length} questions</span></div></div>`;
   $("#bk").onclick=map; $("#go").onclick=()=>startLevel(i);
   window.scrollTo(0,0);
 }
-function startLevel(i){G={i,L:LEVELS[i],qi:0,hearts:3,combo:0,earned:0,mode:"level"};renderQ();}
+function startLevel(i){G={i,L:LEVELS[i],qs:shuffle(LEVELS[i].qs).slice(0,ZONE_N),qi:0,hearts:3,combo:0,earned:0,mode:"level"};renderQ();}
 function heartsHTML(){return "♥".repeat(G.hearts)+`<span class="lost">${"♥".repeat(3-G.hearts)}</span>`;}
 
 function renderQ(){
-  const L=G.L,q=L.qs[G.qi];
+  const L=G.L,q=G.qs[G.qi];
   app.innerHTML=`<div class="card pop" id="qc">
    <div class="topbar"><button class="back" id="bk">← Briefing</button>
      <span class="combo" id="combo">${G.combo>1?"combo ×"+G.combo:""}</span>
      <span class="hearts" aria-label="${G.hearts} hearts left">${heartsHTML()}</span></div>
-   <div class="progress"><i style="width:${G.qi/L.qs.length*100}%"></i></div>
-   <div class="eyebrow">${L.name} · ${G.qi+1}/${L.qs.length}</div>
+   <div class="progress"><i style="width:${G.qi/G.qs.length*100}%"></i></div>
+   <div class="eyebrow">${L.name} · ${G.qi+1}/${G.qs.length}</div>
    <div id="qbody"></div><div id="fb"></div>
    <div class="actions" id="act"></div></div>`;
   $("#bk").onclick=()=>briefing(G.i);
@@ -936,7 +1195,7 @@ function answered(q,ok){
   }else{G.combo=0;G.hearts--;$("#combo").textContent="";
     document.querySelector(".hearts").innerHTML=heartsHTML();$("#qc").classList.add("shake");
     fb.innerHTML=`<div class="feedback bad"><b>Not quite</b><p>${q.why}</p></div>`;}
-  const last=G.qi===G.L.qs.length-1;
+  const last=G.qi===G.qs.length-1;
   const label=G.hearts===0?"See result":last?"Finish zone":"Next";
   $("#act").innerHTML=`<button class="primary" id="next">${label} →</button>`;
   $("#next").onclick=()=>{ if(G.hearts===0)return levelEnd(false); if(last)return levelEnd(true); G.qi++; renderQ(); };
@@ -960,7 +1219,7 @@ function levelEnd(won){
   }else{
     app.innerHTML=`<div class="card pop"><div class="eyebrow">Zone ${G.i+1}</div>
      <div class="big" style="color:var(--bad)">StackOverflowError</div>
-     <p class="verdict fail">Out of hearts.</p><p>Reread the briefing's traps, then go again. Option order shuffles each run.</p>
+     <p class="verdict fail">Out of hearts.</p><p>Reread the briefing's traps, then go again. Each retry draws a new set of questions.</p>
      <div class="actions"><button class="primary" id="rp">Retry zone</button><button class="ghost" id="br">Reread briefing</button><button class="ghost" id="mp">Map</button></div></div>`;
     $("#br").onclick=()=>briefing(G.i);
   }
