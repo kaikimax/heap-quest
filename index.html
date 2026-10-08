@@ -3,8 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="A study game for OCP Java SE 21 Chapter 1: eight zones of challenges and a timed final exam.">
-<title>Heap Quest</title>
+<meta name="description" content="Free OCP Java SE 21 (1Z0-830) practice game. Learn the object life-cycle, access modifiers, overloading, varargs, initialization order and nested classes, then take a timed mock exam with multi-select questions.">
+<meta name="keywords" content="OCP Java SE 21, 1Z0-830, Java 21 certification, Oracle Certified Professional Java, Java practice questions, Java mock exam, OCP Java 21 study guide, Java OOP quiz, method overloading, varargs, initialization order, nested classes, garbage collection">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#13243a">
+<link rel="canonical" href="https://kaikimax.github.io/heap-quest/">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Heap Quest">
+<meta property="og:title" content="Heap Quest: OCP Java SE 21 (1Z0-830) Practice Game">
+<meta property="og:description" content="Free OCP Java SE 21 (1Z0-830) practice game. Learn the object life-cycle, access modifiers, overloading, varargs, initialization order and nested classes, then take a timed mock exam with multi-select questions.">
+<meta property="og:url" content="https://kaikimax.github.io/heap-quest/">
+<meta property="og:image" content="https://kaikimax.github.io/heap-quest/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Heap Quest: OCP Java SE 21 (1Z0-830) practice game">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Heap Quest: OCP Java SE 21 (1Z0-830) Practice Game">
+<meta name="twitter:description" content="Free OCP Java SE 21 (1Z0-830) practice game. Learn the object life-cycle, access modifiers, overloading, varargs, initialization order and nested classes, then take a timed mock exam with multi-select questions.">
+<meta name="twitter:image" content="https://kaikimax.github.io/heap-quest/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Heap Quest",
+  "url": "https://kaikimax.github.io/heap-quest/",
+  "description": "Free OCP Java SE 21 (1Z0-830) practice game. Learn the object life-cycle, access modifiers, overloading, varargs, initialization order and nested classes, then take a timed mock exam with multi-select questions.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "educationalUse": "Exam preparation",
+  "teaches": ["Java object life-cycle and garbage collection", "Packages and imports", "Access modifiers", "Static and instance members", "Method overloading and varargs", "Constructors and initialization order", "Nested, inner, local and anonymous classes"],
+  "about": { "@type": "Thing", "name": "Oracle Certified Professional: Java SE 21 Developer (1Z0-830)" },
+  "image": "https://kaikimax.github.io/heap-quest/og-image.png"
+}
+</script>
+<title>Heap Quest | OCP Java SE 21 (1Z0-830) Practice Questions &amp; Mock Exam Game</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -65,8 +107,9 @@ button:focus-visible,.opt:focus-visible{outline:3px solid var(--accent);outline-
 .zone.exam{grid-column:1/-1;background:var(--ink);color:var(--paper);border-color:var(--ink);min-height:0}
 .zone.exam p,.zone.exam .addr{color:color-mix(in srgb,var(--paper) 70%,transparent)}
 .zone.exam .stars{color:var(--accent)}
-.foot{margin-top:22px;display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
-.linkbtn{background:none;border:0;padding:0;text-decoration:underline;color:var(--muted)}
+.about{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted)}
+.about h2{font-size:.95rem;color:var(--ink);margin-bottom:6px}
+.about p{max-width:72ch;margin:0 0 8px}
 
 /* Card */
 .card{background:var(--panel);border:1.5px solid var(--line);border-radius:8px;padding:22px clamp(16px,4vw,30px)}
@@ -158,6 +201,12 @@ pre.code .k{color:var(--kw)} pre.code .s{color:var(--str)} pre.code .c{color:var
     </div>
   </header>
   <main id="app"></main>
+  <footer class="about">
+    <h2>About Heap Quest</h2>
+    <p>Heap Quest is a free practice game for the Oracle Certified Professional: Java SE 21 Developer exam (1Z0-830). It covers Chapter 1 of the exam objectives: the object life-cycle and garbage collection, packages and imports, access modifiers, static and instance members, methods and pass-by-value, method overloading and varargs, constructors and initialization order, and nested, inner, local and anonymous classes.</p>
+    <p>Each zone has a short lesson, exam traps, and practice questions, including multi-select "choose two" questions like the real certification. Finish with a timed Java 21 mock exam drawn from a pool of 40 questions.</p>
+    <p>Independent study project. Not affiliated with or endorsed by Oracle. Oracle and Java are registered trademarks of Oracle and/or its affiliates.</p>
+  </footer>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -733,6 +782,7 @@ const RANKS=[[0,"javac Apprentice"],[90,"Bytecode Reader"],[220,"Heap Walker"],[
 const KEY="heapquest.v1";
 let S = {xp:0, stars:{}, best:null, unlockAll:false};
 try{ const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw)); }catch(e){}
+S.unlockAll=false;
 function save(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} hud(); }
 
 const $=s=>document.querySelector(s);
@@ -780,18 +830,9 @@ function map(){
      <h3>Final Exam · 20 questions · 48 minutes</h3>
      <p>Drawn at random from a pool of 40, so each attempt is a different mix. Multi-select questions are all-or-nothing. Timed at 2.4 minutes per question, the real exam's pace. Pass mark 68%.</p>
      <div class="stars">${allDone||S.unlockAll?best:"Clear all 8 zones to unlock"}</div></button>
-  </div>
-  <div class="foot">
-    <button class="linkbtn" id="unlock">${S.unlockAll?"Re-lock zones":"Unlock everything (skip the progression)"}</button>
-    <button class="linkbtn" id="reset">Reset progress</button>
   </div>`;
   app.querySelectorAll(".zone[data-i]").forEach(b=>b.onclick=()=>briefing(+b.dataset.i));
   $("#examBtn").onclick=startExam;
-  $("#unlock").onclick=()=>{S.unlockAll=!S.unlockAll;save();map();};
-  $("#reset").onclick=e=>{
-    if(e.target.dataset.c){S={xp:0,stars:{},best:null,unlockAll:false};save();map();toast("Progress reset");}
-    else{e.target.dataset.c="1";e.target.textContent="Tap again to confirm reset";}
-  };
   window.scrollTo(0,0);
 }
 
