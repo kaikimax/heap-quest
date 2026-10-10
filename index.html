@@ -179,9 +179,37 @@ pre.code .k{color:var(--kw)} pre.code .s{color:var(--str)} pre.code .c{color:var
 .choose{display:inline-block;font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;background:var(--ink);color:var(--paper);padding:2px 8px;border-radius:3px;margin-bottom:10px}
 .timer{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.95rem;border:1.5px solid var(--line);border-radius:5px;padding:3px 10px}
 .timer.low{color:var(--bad);border-color:var(--bad)}
-.toast{position:absolute;left:50%;top:0;width:max-content;max-width:calc(100vw - 32px);transform:translate(-50%,8px);background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:8px;border:2px solid var(--accent);box-shadow:0 10px 30px rgba(0,0,0,.28);font-family:var(--f-display);font-weight:600;font-size:1.05rem;text-align:center;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:50}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));width:max-content;max-width:calc(100vw - 32px);transform:translate(-50%,-12px);background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:8px;border:2px solid var(--accent);box-shadow:0 10px 30px rgba(0,0,0,.28);font-family:var(--f-display);font-weight:600;font-size:1.05rem;text-align:center;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:50}
 .toast small{display:block;font-family:var(--f-mono);font-size:.68rem;font-weight:400;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:2px}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+/* Course and chapter screens */
+.crumb{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.ch-title{font-size:clamp(1.4rem,4vw,1.9rem);margin-bottom:8px}
+.chapters{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.chcard{text-align:left;background:var(--panel);border:1.5px solid var(--line);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s}
+.chcard:hover:not(:disabled){transform:translateY(-2px);border-color:var(--accent)}
+.chcard:disabled{cursor:default;background:transparent;border-style:dashed}
+.chcard .num{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.chcard h3{font-size:1.05rem}
+.chcard:disabled h3{color:var(--muted)}
+.chcard .meta{margin-top:auto;font-family:var(--f-mono);font-size:.76rem;color:var(--muted)}
+.chcard.passed{border-color:var(--good)}
+.tag{font-family:var(--f-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;padding:1px 7px;border-radius:3px;border:1px solid var(--line);color:var(--muted)}
+.tag.ok{border-color:var(--good);color:var(--good)}
+.tag.go{border-color:var(--accent);color:var(--accent)}
+.minibar{height:5px;background:var(--soft);border-radius:3px;overflow:hidden}
+.minibar i{display:block;height:100%;background:var(--accent)}
+/* Exam key fragments */
+.keybar{background:var(--panel);border:1.5px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:18px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.keybar .klabel{font-family:var(--f-display);font-weight:600;min-width:0}
+.keybar .klabel small{display:block;font-family:var(--f-body);font-weight:400;font-size:.82rem;color:var(--muted)}
+.frags{display:grid;gap:6px;grid-template-columns:repeat(var(--n,8),minmax(0,36px));min-width:0}
+.frag{height:42px;min-width:0;border:1.5px dashed var(--line);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-mono);color:var(--muted);font-size:1.05rem;line-height:1}
+.frag small{font-size:.58rem;margin-top:3px;letter-spacing:.06em}
+.frag.on{border:1.5px solid var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--panel));color:var(--accent);font-weight:600}
+.frag.new{animation:fragin .7s ease-out}
+@keyframes fragin{0%{transform:scale(.4) rotate(-12deg);opacity:0}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+.keybar.full{border-color:var(--accent)}
 @keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.01)}100%{transform:scale(1)}}
 .pop{animation:pop .25s ease-out}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
@@ -194,18 +222,18 @@ pre.code .k{color:var(--kw)} pre.code .s{color:var(--str)} pre.code .c{color:var
 
 <div class="wrap">
   <header class="hud">
-    <div class="brand"><h1>Heap Quest</h1><span>OCP Java SE 21 · Ch. 1</span></div>
+    <div class="brand"><h1>Heap Quest</h1><span>OCP Java SE 21 · 1Z0-830</span></div>
     <div class="stats">
       <div class="stat"><small>Rank</small><b id="rank">javac Apprentice</b><div class="xpbar"><i id="xpfill"></i></div></div>
       <div class="stat"><small>XP</small><b id="xp">0</b></div>
-      <div class="stat"><small>Zones cleared</small><b id="cleared">0/8</b></div>
+      <div class="stat"><small>Chapters passed</small><b id="cleared">0/14</b></div>
     </div>
   </header>
   <main id="app"></main>
   <footer class="about">
     <h2>About Heap Quest</h2>
-    <p>Heap Quest is a free practice game for the Oracle Certified Professional: Java SE 21 Developer exam (1Z0-830). It covers Chapter 1 of the exam objectives: the object life-cycle and garbage collection, packages and imports, access modifiers, static and instance members, methods and pass-by-value, method overloading and varargs, constructors and initialization order, and nested, inner, local and anonymous classes.</p>
-    <p>Each zone has a short lesson, exam traps, and practice questions, including multi-select "choose two" questions like the real certification. Finish with a timed Java 21 mock exam drawn from a pool of 40 questions.</p>
+    <p>Heap Quest is a free practice game for the Oracle Certified Professional: Java SE 21 Developer exam (1Z0-830), organized chapter by chapter. Chapter 1 is playable now and covers the object life-cycle and garbage collection, packages and imports, access modifiers, static and instance members, methods and pass-by-value, method overloading and varargs, constructors and initialization order, and nested, inner, local and anonymous classes.</p>
+    <p>Each zone has a short lesson, exam traps, and practice questions, including multi-select "choose two" questions like the real certification. Collect a fragment from every zone to unlock each chapter's timed Java 21 mock exam.</p>
     <p>Independent study project. Not affiliated with or endorsed by Oracle. Oracle and Java are registered trademarks of Oracle and/or its affiliates.</p>
   </footer>
 </div>
@@ -319,7 +347,7 @@ qs:[
     static {
         MAX = Integer.parseInt("10");
     }
-}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"A static final field can be assigned once in a static initializer, with any expression. (The study guide claims it must be a compile-time constant. It doesn't.)"},
+}`,opts:["Compiles","Doesn't compile"],a:0,fixed:true,why:"A static final field can be assigned once in a static initializer, with any expression."},
 {type:"mcq",q:"What prints?",code:`class Tv {
     static int made = 0;
     Tv() { made++; }
@@ -373,7 +401,7 @@ lesson:`<p><b>Overloading</b>: same name, different parameter list. Changing onl
 <p>Inside a phase the most specific method wins. If two are equally specific, the call is ambiguous and won't compile.</p>
 <p><b>Varargs</b> (<code>int... nums</code>): must be the last parameter, only one per method, and is an array inside the method. Call it with a list, with an array, or with nothing (you get an empty array, length 0). <code>int[]</code> and <code>int...</code> count as the same signature.</p>
 <p><b>main</b>: <code>public static void main(String[] args)</code>. <code>String... args</code>, <code>final String[] args</code> and <code>static public</code> also work. You can overload <code>main</code>, but only that signature is the entry point.</p>`,
-traps:["Widening beats boxing, and boxing beats varargs. The guide only mentions widening.","<code>null</code> passed to <code>p(Object)</code> and <code>p(String)</code> picks String, the more specific type.","<code>void m(int a, long b)</code> and <code>void m(long a, int b)</code> with <code>m(1, 2)</code> is ambiguous."],
+traps:["Widening beats boxing, and boxing beats varargs.","<code>null</code> passed to <code>p(Object)</code> and <code>p(String)</code> picks String, the more specific type.","<code>void m(int a, long b)</code> and <code>void m(long a, int b)</code> with <code>m(1, 2)</code> is ambiguous."],
 qs:[
 {type:"mcq",q:"What prints?",code:`static void go(long x)    { System.out.print("long"); }
 static void go(Integer x) { System.out.print("Integer"); }
@@ -399,7 +427,7 @@ lesson:`<p>A <b>constructor</b> has the class's name and no return type. Add <co
 <p>The compiler adds a no-arg default constructor <b>only if you declare none</b>. Declare <code>Cake(String f)</code> and <code>new Cake()</code> stops compiling.</p>
 <p>A constructor's first statement is <code>this(...)</code> or <code>super(...)</code>. If you write neither, the compiler inserts <code>super()</code>. You can't have both.</p>
 <p>An instance initializer <code>{ ... }</code> runs on every <code>new</code>. A static initializer <code>static { ... }</code> runs once, when the class is initialized.</p>
-<p><b>The order</b> (the study guide gets this wrong):</p>
+<p><b>The order:</b></p>
 <ul><li><b>Class first used:</b> static field initializers and static blocks, in source order. Superclass before subclass. Once only.</li>
 <li><b>Each <code>new</code>:</b> all fields start at defaults (0/false/null), then the superclass constructor runs, then instance field initializers and instance blocks in source order, then the rest of the constructor body.</li></ul>`,
 traps:["<code>int x = 1;</code> is a field initializer. Its value is set in step 3, after super() — the default is 0, not 1.","Field initializers and instance blocks are one combined list, run top to bottom.","<code>this(...)</code> and <code>super(...)</code> can't both appear."],
@@ -1018,11 +1046,48 @@ static void p(StringBuilder sb) { }
 p(null);`,opts:["Doesn't compile: ambiguous","Calls p(String)","Calls p(StringBuilder)","NullPointerException"],a:0,why:"null fits both, and neither type is a subtype of the other, so neither is more specific."}
 );
 
-const RANKS=[[0,"javac Apprentice"],[90,"Bytecode Reader"],[220,"Heap Walker"],[380,"GC Whisperer"],[560,"OCP Candidate"]];
+/* Rank ladder sized for all 14 chapters. A first clear of a chapter earns roughly 900-1300 XP. */
+const RANKS=[[0,"javac Apprentice"],[150,"Bytecode Reader"],[400,"Heap Walker"],[800,"Stack Tracer"],[1300,"GC Whisperer"],
+  [2000,"Lambda Wrangler"],[2900,"Stream Shaper"],[4000,"Thread Tamer"],[5300,"Module Architect"],[6800,"JVM Tuner"],
+  [8500,"Type Erasure Survivor"],[10500,"Certified Contender"],[13000,"OCP Candidate"]];
+/* ================================================================
+   CHAPTERS
+   To add a chapter later, give its entry in this list:
+     zones: [ {id, name, addr, blurb, lesson, traps:[...], qs:[...]}, ... ]
+     exam:  [ {lv:"<zone id>", q, code?, opts, a, why, type?, pick?}, ... ]
+   (same shapes as Chapter 1's LEVELS and EXAM above). Leave zones out and
+   the chapter shows as "Coming soon". Each zone cleared earns one fragment
+   of that chapter's exam key; all fragments unlock the chapter exam.
+   ================================================================ */
+const CHAPTERS=[
+ {id:"ch1",num:1,title:"Object-Oriented Approach, Part 1",blurb:"Objects, packages, access, methods, overloading, initialization, nested classes.",zones:LEVELS,exam:EXAM},
+ {id:"ch2",num:2,title:"Object-Oriented Approach, Part 2",blurb:"Inheritance, polymorphism, abstract classes, interfaces, sealed types."},
+ {id:"ch3",num:3,title:"Records and Enums",blurb:"Record classes, compact constructors, enum types and their methods."},
+ {id:"ch4",num:4,title:"Working with Data",blurb:"Primitives, wrappers, operators, String, StringBuilder, Math."},
+ {id:"ch5",num:5,title:"Controlling Program Flow",blurb:"if, switch expressions, pattern matching, loops, break and continue."},
+ {id:"ch6",num:6,title:"Arrays, Generics and Collections",blurb:"Arrays, generic types and wildcards, List, Set, Map, Deque, sorting."},
+ {id:"ch7",num:7,title:"Exceptions",blurb:"Checked vs unchecked, try-with-resources, custom exceptions."},
+ {id:"ch8",num:8,title:"Functional Interfaces and Lambdas",blurb:"Lambda syntax, built-in functional interfaces, method references."},
+ {id:"ch9",num:9,title:"Streams",blurb:"Stream pipelines, collectors, grouping, Optional, primitive streams."},
+ {id:"ch10",num:10,title:"Concurrency",blurb:"Threads, virtual threads, executors, locks, concurrent collections."},
+ {id:"ch11",num:11,title:"The Date API",blurb:"LocalDate, time zones, Duration vs Period, formatting."},
+ {id:"ch12",num:12,title:"File I/O and Serialization",blurb:"Path, Files, I/O streams, serialization."},
+ {id:"ch13",num:13,title:"Modules",blurb:"module-info, requires, exports, services, migration."},
+ {id:"ch14",num:14,title:"Localization",blurb:"Locale, resource bundles, number and date formatting."}
+];
+CHAPTERS.forEach(c=>{c.ready=!!(c.zones&&c.zones.length&&c.exam&&c.exam.length);
+  if(c.ready){c.examN=Math.min(20,c.exam.length);c.minutes=Math.round(c.examN*2.4);}});
+let CH=CHAPTERS[0];
+
 const KEY="heapquest.v1";
-let S = {xp:0, stars:{}, best:null, unlockAll:false};
+let S = {xp:0, ch:{}};
 try{ const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw)); }catch(e){}
-S.unlockAll=false;
+if(S.stars){ // saves from the single-chapter version
+  S.ch=S.ch||{}; S.ch.ch1={stars:S.stars,best:S.best??null,passed:S.best!=null&&S.best>=Math.ceil(20*.68)};
+}
+delete S.stars; delete S.best; delete S.unlockAll; S.ch=S.ch||{};
+function cs(c=CH){return S.ch[c.id]||(S.ch[c.id]={stars:{},best:null,passed:false});}
+function fragCount(c=CH){return c.ready?c.zones.filter(z=>cs(c).stars[z.id]!=null).length:0;}
 function save(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} hud(); }
 
 const $=s=>document.querySelector(s);
@@ -1040,74 +1105,94 @@ function hl(code){
   return out+esc(code.slice(last));
 }
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-/* Toasts float next to where the player last clicked or tabbed, so they're always in view,
-   even when the page is embedded in a frame that grows to fit its content. */
-let lastY=null;
-document.addEventListener("pointerdown",e=>{lastY=e.pageY;},true);
-document.addEventListener("focusin",e=>{const r=e.target.getBoundingClientRect();lastY=r.top+window.scrollY;},true);
+/* Toasts are pinned to the browser window, so they stay put while you scroll. */
 function toast(t,label){
   const el=$("#toast");
   el.innerHTML=(label?`<small>${label}</small>`:"")+esc(t);
   clearTimeout(el._t);
-  requestAnimationFrame(()=>{
-    const h=el.offsetHeight,docH=document.documentElement.scrollHeight;
-    const viewTop=window.scrollY,viewBot=viewTop+window.innerHeight;
-    let y=(lastY!=null?lastY:viewTop+window.innerHeight/3)-h-24;
-    y=Math.min(Math.max(y,viewTop+12),viewBot-h-12);   // keep it inside the visible area
-    y=Math.max(12,Math.min(y,docH-h-12));               // and inside the page
-    el.style.top=y+"px";
-    el.classList.add("on");
-  });
+  el.classList.remove("on"); void el.offsetWidth; el.classList.add("on");
   el._t=setTimeout(()=>el.classList.remove("on"),label?2600:1800);
 }
 function rank(){let r=RANKS[0],next=null;for(let i=0;i<RANKS.length;i++){if(S.xp>=RANKS[i][0]){r=RANKS[i];next=RANKS[i+1]||null;}}return{r,next};}
 function hud(){
   const {r,next}=rank();
   $("#rank").textContent=r[1]; $("#xp").textContent=S.xp;
+  $("#rank").parentElement.title=next?`${next[0]-S.xp} XP to ${next[1]} (rank ${RANKS.indexOf(next)+1} of ${RANKS.length})`:`Top rank (${RANKS.length} of ${RANKS.length})`;
   $("#xpfill").style.width=next?Math.min(100,(S.xp-r[0])/(next[0]-r[0])*100)+"%":"100%";
-  $("#cleared").textContent=Object.keys(S.stars).length+"/8";
+  $("#cleared").textContent=CHAPTERS.filter(c=>c.ready&&cs(c).passed).length+"/"+CHAPTERS.length;
 }
 function addXP(n){const before=rank().r[1];S.xp+=n;save();const after=rank().r[1];if(after!==before)toast(after,"Rank up");}
-function unlocked(i){return S.unlockAll||i===0||S.stars[LEVELS[i-1].id]!=null;}
+function unlocked(i){return i===0||cs().stars[CH.zones[i-1].id]!=null;}
 
-/* ---------- MAP ---------- */
+function keyBar(newIdx){
+  const n=CH.zones.length,got=fragCount(),full=got===n;
+  const tiles=CH.zones.map((z,i)=>{const on=cs().stars[z.id]!=null;
+    return `<div class="frag ${on?"on":""} ${i===newIdx?"new":""}" title="Zone ${i+1}: ${z.name}${on?" (collected)":""}">${on?"1":"0"}<small>Z${i+1}</small></div>`;}).join("");
+  return `<div class="keybar ${full?"full":""}"><div class="frags" style="--n:${n}" aria-label="${got} of ${n} fragments collected">${tiles}</div>
+    <div class="klabel">Exam key · ${got}/${n} fragments<small>${full?"Key assembled. The final exam is open.":"Clear a zone to collect its fragment. All "+n+" unlock the final exam."}</small></div></div>`;
+}
+
+/* ---------- COURSE (all chapters) ---------- */
+function home(){
+  const cards=CHAPTERS.map(c=>{
+    if(!c.ready)return `<button class="chcard" disabled><div class="num"><span>Chapter ${c.num}</span><span class="tag">Coming soon</span></div><h3>${c.title}</h3><p style="margin:0;font-size:.86rem;color:var(--muted)">${c.blurb}</p></button>`;
+    const st=cs(c),got=fragCount(c),n=c.zones.length;
+    const tag=st.passed?`<span class="tag ok">Passed</span>`:got?`<span class="tag go">In progress</span>`:`<span class="tag go">Start</span>`;
+    const exam=st.best!=null?`Best exam ${st.best}/${c.examN}`:got===n?"Exam unlocked":"Exam locked";
+    return `<button class="chcard ${st.passed?"passed":""}" data-ch="${c.id}"><div class="num"><span>Chapter ${c.num}</span>${tag}</div>
+      <h3>${c.title}</h3><p style="margin:0;font-size:.86rem;color:var(--muted)">${c.blurb}</p>
+      <div class="minibar"><i style="width:${got/n*100}%"></i></div>
+      <div class="meta">${got}/${n} fragments · ${exam}</div></button>`;
+  }).join("");
+  const ready=CHAPTERS.filter(c=>c.ready).length;
+  app.innerHTML=`<p class="intro">Pick a chapter. Each one is a set of zones: read the briefing, beat 7 random challenges with 3 hearts, and collect that zone's fragment of the exam key. Collect every fragment to unlock the chapter's timed final exam. ${ready} of ${CHAPTERS.length} chapters are playable so far.</p>
+  <div class="heap-label">Chapters</div><div class="chapters">${cards}</div>`;
+  app.querySelectorAll(".chcard[data-ch]").forEach(b=>b.onclick=()=>{CH=CHAPTERS.find(c=>c.id===b.dataset.ch);map();});
+  window.scrollTo(0,0);
+}
+
+/* ---------- CHAPTER MAP ---------- */
 function map(){
-  const zones=LEVELS.map((L,i)=>{
-    const st=S.stars[L.id], open=unlocked(i);
-    const stars=st!=null?"★".repeat(st)+"☆".repeat(3-st):open?"not cleared":"locked";
-    return `<button class="zone ${st!=null?"done":""}" data-i="${i}" ${open?"":"disabled"}>
+  const st=cs(),n=CH.zones.length;
+  const zones=CH.zones.map((L,i)=>{
+    const s2=st.stars[L.id], open=unlocked(i);
+    const stars=s2!=null?"★".repeat(s2)+"☆".repeat(3-s2):open?"not cleared":"locked";
+    return `<button class="zone ${s2!=null?"done":""}" data-i="${i}" ${open?"":"disabled"}>
       <div class="addr"><span>Zone ${i+1}</span><span>${L.addr}</span></div>
       <h3>${L.name}</h3><p>${L.blurb}</p><div class="stars">${stars}</div></button>`;
   }).join("");
-  const allDone=Object.keys(S.stars).length===8;
-  const best=S.best!=null?`Best score: ${S.best}/20`:"Not attempted";
-  app.innerHTML=`<p class="intro">Eight zones of the heap, one per part of Chapter 1. Each zone opens with a short briefing, then 7 challenges drawn at random from that zone's question bank. You have 3 hearts per zone. Run out and you hit a StackOverflowError and replay it. Clear all eight to face the final exam.</p>
+  const allDone=fragCount()===n;
+  const best=st.best!=null?`Best score: ${st.best}/${CH.examN}${st.passed?" · Passed":""}`:"Not attempted";
+  app.innerHTML=`<div class="crumb"><button class="back" id="home">← All chapters</button><span class="eyebrow" style="margin:0">Chapter ${CH.num}</span></div>
+  <h2 class="ch-title">${CH.title}</h2>
+  <p class="intro">${n} zones. Each opens with a short briefing, then ${ZONE_N} challenges drawn at random from that zone's question bank. You have 3 hearts per zone. Run out and you hit a StackOverflowError and replay it.</p>
+  ${keyBar()}
   <div class="heap-label">Heap map</div>
   <div class="zones">${zones}
-   <button class="zone exam" id="examBtn" ${allDone||S.unlockAll?"":"disabled"}>
+   <button class="zone exam" id="examBtn" ${allDone?"":"disabled"}>
      <div class="addr"><span>Final</span><span>@ffff</span></div>
-     <h3>Final Exam · 20 questions · 48 minutes</h3>
-     <p>Drawn at random from a pool of 40, so each attempt is a different mix. Multi-select questions are all-or-nothing. Timed at 2.4 minutes per question, the real exam's pace. Pass mark 68%.</p>
-     <div class="stars">${allDone||S.unlockAll?best:"Clear all 8 zones to unlock"}</div></button>
+     <h3>Final Exam · ${CH.examN} questions · ${CH.minutes} minutes</h3>
+     <p>Drawn at random from a pool of ${CH.exam.length}, so each attempt is a different mix. Multi-select questions are all-or-nothing. Timed at 2.4 minutes per question, the real exam's pace. Pass mark 68%.</p>
+     <div class="stars">${allDone?best:`Locked · ${n-fragCount()} fragment${n-fragCount()===1?"":"s"} missing`}</div></button>
   </div>`;
+  $("#home").onclick=home;
   app.querySelectorAll(".zone[data-i]").forEach(b=>b.onclick=()=>briefing(+b.dataset.i));
   $("#examBtn").onclick=startExam;
   window.scrollTo(0,0);
 }
-
 /* ---------- LEVEL ---------- */
 let G=null;
 function briefing(i){
-  const L=LEVELS[i];
+  const L=CH.zones[i];
   app.innerHTML=`<div class="card lesson pop">
-   <div class="topbar"><button class="back" id="bk">← Map</button><span class="eyebrow">Zone ${i+1} · ${L.addr} · Briefing</span></div>
+   <div class="topbar"><button class="back" id="bk">← Map</button><span class="eyebrow">Ch. ${CH.num} · Zone ${i+1} · Briefing</span></div>
    <h2>${L.name}</h2>${L.lesson}
    <div class="traps"><h3>Exam traps</h3><ul>${L.traps.map(t=>`<li>${t}</li>`).join("")}</ul></div>
    <div class="actions"><button class="primary" id="go">Start ${Math.min(ZONE_N,L.qs.length)} challenges</button><span style="color:var(--muted);font-size:.85rem">Drawn at random from ${L.qs.length} questions</span></div></div>`;
   $("#bk").onclick=map; $("#go").onclick=()=>startLevel(i);
   window.scrollTo(0,0);
 }
-function startLevel(i){G={i,L:LEVELS[i],qs:shuffle(LEVELS[i].qs).slice(0,ZONE_N),qi:0,hearts:3,combo:0,earned:0,mode:"level"};renderQ();}
+function startLevel(i){G={i,L:CH.zones[i],qs:shuffle(CH.zones[i].qs).slice(0,ZONE_N),qi:0,hearts:3,combo:0,earned:0,mode:"level"};renderQ();}
 function heartsHTML(){return "♥".repeat(G.hearts)+`<span class="lost">${"♥".repeat(3-G.hearts)}</span>`;}
 
 function renderQ(){
@@ -1199,28 +1284,39 @@ function answered(q,ok){
   const label=G.hearts===0?"See result":last?"Finish zone":"Next";
   $("#act").innerHTML=`<button class="primary" id="next">${label} →</button>`;
   $("#next").onclick=()=>{ if(G.hearts===0)return levelEnd(false); if(last)return levelEnd(true); G.qi++; renderQ(); };
-  $("#next").focus();
+  const nx=$("#next");
+  nx.focus({preventScroll:true});
+  // Scroll only as far as needed to bring the feedback and Next button into view.
+  const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const over=nx.getBoundingClientRect().bottom+16-window.innerHeight;
+  if(over>0)window.scrollBy({top:over,behavior:reduce?"auto":"smooth"});
 }
 
 function levelEnd(won){
-  const L=G.L;
+  const L=G.L,n=CH.zones.length;
   if(won){
-    const prev=S.stars[L.id];const st=G.hearts;
-    if(prev==null||st>prev)S.stars[L.id]=st;
-    const bonus=st*10;addXP(bonus);
-    app.innerHTML=`<div class="card pop"><div class="eyebrow">Zone ${G.i+1} cleared</div>
-     <div class="big" style="color:var(--accent)">${"★".repeat(st)}${"☆".repeat(3-st)}</div>
+    const st=cs(),prev=st.stars[L.id],h=G.hearts,isNew=prev==null;
+    if(prev==null||h>prev)st.stars[L.id]=h;
+    const bonus=h*10;addXP(bonus);
+    const got=fragCount(),full=got===n;
+    if(isNew)toast(full?"Exam key assembled":`Fragment ${got}/${n} collected`,full?"Final exam unlocked":"Zone "+(G.i+1)+" cleared");
+    const nextOpen=G.i<n-1;
+    app.innerHTML=`<div class="card pop"><div class="eyebrow">Ch. ${CH.num} · Zone ${G.i+1} cleared</div>
+     <div class="big" style="color:var(--accent)">${"★".repeat(h)}${"☆".repeat(3-h)}</div>
      <p class="verdict pass">${L.name} is no longer reachable by bugs.</p>
-     <p>+${G.earned} XP from answers, +${bonus} XP heart bonus.${st<3?" Replay for 3 stars.":""}</p>
-     <div class="actions">${G.i<7?`<button class="primary" id="nx">Next zone →</button>`:`<button class="primary" id="ex">Take the final exam →</button>`}
-     <button class="ghost" id="rp">Replay</button><button class="ghost" id="mp">Map</button></div></div>`;
+     <p>+${G.earned} XP from answers, +${bonus} XP heart bonus.${h<3?" Replay for 3 stars.":""}</p>
+     ${isNew?`<div class="heap-label" style="margin-top:16px">${full?"Last fragment collected":"Fragment collected"}</div>`:""}
+     ${keyBar(isNew?G.i:-1)}
+     <div class="actions">${full?`<button class="primary" id="ex">Take the final exam →</button>`:""}
+     ${nextOpen?`<button class="${full?"ghost":"primary"}" id="nx">Next zone →</button>`:""}
+     <button class="ghost" id="rp">Replay</button><button class="ghost" id="mp">Chapter map</button></div></div>`;
     if($("#nx"))$("#nx").onclick=()=>briefing(G.i+1);
     if($("#ex"))$("#ex").onclick=startExam;
   }else{
-    app.innerHTML=`<div class="card pop"><div class="eyebrow">Zone ${G.i+1}</div>
+    app.innerHTML=`<div class="card pop"><div class="eyebrow">Ch. ${CH.num} · Zone ${G.i+1}</div>
      <div class="big" style="color:var(--bad)">StackOverflowError</div>
      <p class="verdict fail">Out of hearts.</p><p>Reread the briefing's traps, then go again. Each retry draws a new set of questions.</p>
-     <div class="actions"><button class="primary" id="rp">Retry zone</button><button class="ghost" id="br">Reread briefing</button><button class="ghost" id="mp">Map</button></div></div>`;
+     <div class="actions"><button class="primary" id="rp">Retry zone</button><button class="ghost" id="br">Reread briefing</button><button class="ghost" id="mp">Chapter map</button></div></div>`;
     $("#br").onclick=()=>briefing(G.i);
   }
   $("#rp").onclick=()=>startLevel(G.i); $("#mp").onclick=map;
@@ -1228,7 +1324,7 @@ function levelEnd(won){
 }
 
 /* ---------- EXAM ---------- */
-const N=20, MINUTES=48; // 120 min / 50 q on the real exam = 2.4 min per question
+let N=20, MINUTES=48; // set per chapter: 2.4 min per question, the real exam's pace
 function isRight(q,ans){
   if(q.type==="multi")return Array.isArray(ans)&&ans.length===q.a.length&&q.a.every(x=>ans.includes(x));
   return ans===q.a;
@@ -1247,13 +1343,14 @@ function tick(){
 }
 function startExam(){
   stopTimer();
-  E={qs:shuffle(EXAM).slice(0,N),i:0,ans:[],end:Date.now()+MINUTES*60000};
+  N=CH.examN; MINUTES=CH.minutes;
+  E={qs:shuffle(CH.exam).slice(0,N),i:0,ans:[],end:Date.now()+MINUTES*60000};
   E.timer=setInterval(tick,1000);examQ();
 }
 function examQ(){
   const q=E.qs[E.i];
   app.innerHTML=`<div class="card pop">
-   <div class="topbar"><button class="back" id="bk">Quit exam</button><span class="eyebrow">Final exam · ${E.i+1}/${N}</span><span class="timer" id="timer"></span></div>
+   <div class="topbar"><button class="back" id="bk">Quit exam</button><span class="eyebrow">Ch. ${CH.num} exam · ${E.i+1}/${N}</span><span class="timer" id="timer"></span></div>
    <div class="progress"><i style="width:${E.i/N*100}%"></i></div>
    <div id="qbody"></div>
    <div class="actions"><button class="primary" id="next" disabled>${E.i===N-1?"Submit exam":"Next"} →</button>
@@ -1276,27 +1373,30 @@ function examEnd(){
   keyHandler=null;
   const right=E.qs.filter((q,k)=>isRight(q,E.ans[k])).length;
   const pct=Math.round(right/N*100),pass=pct>=68;
-  if(S.best==null||right>S.best)S.best=right;
+  const st=cs(),firstPass=pass&&!st.passed;
+  if(st.best==null||right>st.best)st.best=right;
+  if(pass)st.passed=true;
   addXP(right*5+(pass?100:0));
+  if(firstPass)toast(`Chapter ${CH.num} passed`,"Exam passed");
   const by={};E.qs.forEach((q,k)=>{by[q.lv]=by[q.lv]||[0,0];by[q.lv][1]++;if(isRight(q,E.ans[k]))by[q.lv][0]++;});
-  const rows=LEVELS.filter(L=>by[L.id]).map(L=>{const [r,t]=by[L.id];const p=r/t*100;
+  const rows=CH.zones.filter(L=>by[L.id]).map(L=>{const [r,t]=by[L.id];const p=r/t*100;
     return `<div class="brow"><div>${L.name}<div class="bar"><i style="width:${p}%;background:${p>=68?"var(--good)":"var(--bad)"}"></i></div></div><span>${r}/${t}</span></div>`;}).join("");
   const wrong=E.qs.map((q,k)=>({q,k})).filter(o=>!isRight(o.q,E.ans[o.k]));
   const review=wrong.map(({q,k})=>`<div class="ritem"><p class="qtext">${q.q}</p>${q.code?`<pre class="code">${hl(q.code)}</pre>`:""}
      <p class="ans y">Your answer: ${fmtAns(q,E.ans[k])}</p><p class="ans c">Correct: ${fmtAns(q,q.a)}</p><p>${q.why}</p></div>`).join("");
-  app.innerHTML=`<div class="card pop"><div class="eyebrow">Final exam result</div>
+  app.innerHTML=`<div class="card pop"><div class="eyebrow">Chapter ${CH.num} · Final exam result</div>
    <div class="big">${right}/${N} <span style="font-size:.45em;color:var(--muted)">${pct}%</span></div>
-   <p class="verdict ${pass?"pass":"fail"}">${pass?"Pass. You'd clear the 68% bar.":"Fail. The bar is 68% (14/20). Replay your weakest zones, then retake: you get a different mix of questions."}</p>
+   <p class="verdict ${pass?"pass":"fail"}">${pass?"Pass. You'd clear the 68% bar.":`Fail. The bar is 68% (${Math.ceil(N*.68)}/${N}). Replay your weakest zones, then retake: you get a different mix of questions.`}</p>
    <div class="heap-label">By zone · weakest bars are what to replay</div>
    <div class="breakdown">${rows}</div>
-   <div class="actions"><button class="primary" id="again">Retake exam</button><button class="ghost" id="mp">Map</button></div>
+   <div class="actions"><button class="primary" id="again">Retake exam</button><button class="ghost" id="mp">Chapter map</button><button class="ghost" id="hm">All chapters</button></div>
    ${wrong.length?`<div class="heap-label" style="margin-top:22px">What you missed (${wrong.length})</div><div class="review">${review}</div>`:"<p>Perfect score. Nothing to review.</p>"}
   </div>`;
-  $("#again").onclick=startExam;$("#mp").onclick=map;
+  $("#again").onclick=startExam;$("#mp").onclick=map;$("#hm").onclick=home;
   window.scrollTo(0,0);
 }
 
-hud(); map();
+hud(); home();
 </script>
 </body>
 </html>
